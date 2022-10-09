@@ -1,0 +1,63 @@
+name: Generate Tool Binaries
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  PPLKILLER_SOLUTION_PATH: ./PPLKiller/
+  PPLKILLER_BUILD_CONFIGURATION: Release
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: print vars
+      run: |
+        echo event: ${{ github.event }}
+        echo workflow: ${{ github.workflow }}
+        echo actor: ${{ github.actor }}
+        echo repository: ${{ github.repository }}
+        echo event_name: ${{ github.event_name }}
+        echo sha: ${{ github.sha }}
+        echo ref: ${{ github.ref }}
+        echo head_ref: ${{ github.head_ref }}
+        echo base_ref: ${{ github.base_ref }}
+
+    - uses: actions/checkout@v3
+    - name: Get Submodules
+      run: |
+        git submodule update --init --force --recursive --depth=1
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: PPLKiller -  Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.PPLKILLER_SOLUTION_PATH}}
+
+    - name: PPLKiller - Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{env.PPLKILLER_BUILD_CONFIGURATION}} ${{env.PPLKILLER_SOLUTION_PATH}}
+
+    - name: Push files
+      run: |
+        git config user.name "Tzaoh"
+        git config user.email "Tzaoh@users.noreply.github.com"
+        
+        # cp PPLKiller\x64\Release\PPLKiller.exe .\PPLKiller.exe
+        Copy-Item -Path .\PPLKiller\x64\Release\PPLKiller.exe -Destination .\PPLKiller.exe -Recurse -force
+
+        git add .\PPLKiller.exe
+
+        git commit -m 'Adding binaries'
+        git push 
