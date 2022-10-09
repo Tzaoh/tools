@@ -1,13 +1,18 @@
 name: Generate Tool Binaries
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [workflow_dispatch]
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+# on:
+#   push:
+#     paths:
+#       - 'PPLKiller/**'
 
 env:
-  # Path to the solution file relative to the root of the project.
   PPLKILLER_SOLUTION_PATH: ./PPLKiller/
   PPLKILLER_BUILD_CONFIGURATION: Release
 
