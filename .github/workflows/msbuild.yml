@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-# on:
-#  schedule:
-#  - cron: "0 2 * * *"
-
 env:
   # Path to the solution file relative to the root of the project.
   PPLKILLER_SOLUTION_PATH: ./PPLKiller/
@@ -28,11 +24,9 @@ jobs:
 
     steps:
     # - uses: actions/checkout@v3
-    - name: Build Submodules
+    - name: Get Submodules
       run: |
-        auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-        git submodule sync --recursive
-        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+        git submodule update --init --force --recursive --depth=1
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
