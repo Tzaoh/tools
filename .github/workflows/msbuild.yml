@@ -47,10 +47,7 @@ jobs:
     #     name: PPLKiller
     #     path: PPLKiller\x64\Release\PPLKiller.exe
   
-    - name: Update files on GitHub 3
+    - name: Push files
       run: |
-        working-directory: ${{env.GITHUB_WORKSPACE}}
         cp PPLKiller\x64\Release\PPLKiller.exe .\PPLKiller.exe
-        git add .\PPLKiller.exe
-        git commit -m 'Adding binaries'
-        git push 
+        git add .\PPLKiller.exe && git commit -m 'Adding binaries' && git push 
