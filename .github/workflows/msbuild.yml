@@ -43,10 +43,7 @@ jobs:
         git config user.email "Tzaoh@users.noreply.github.com"
         
         # cp PPLKiller\x64\Release\PPLKiller.exe .\PPLKiller.exe
-        Copy-Item \
-          -Path .\PPLKiller\x64\Release\PPLKiller.exe \
-          -Destination .\PPLKiller.exe \
-          -Recurse -force
+        Copy-Item -Path .\PPLKiller\x64\Release\PPLKiller.exe -Destination .\PPLKiller.exe -Recurse -force
 
         git add .\PPLKiller.exe
 
