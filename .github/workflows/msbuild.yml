@@ -45,4 +45,4 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: PPLKiller
-        path: PPLKiller\PPLKiller\bin\Release\PPLKiller.exe
+        path: PPLKiller\x64\Release\PPLKiller.exe
