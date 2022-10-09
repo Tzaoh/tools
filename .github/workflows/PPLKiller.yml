@@ -3,7 +3,7 @@ name: Compile PPLKiller
 on: [workflow_dispatch]
 
 env:
-  PPLKILLER_SOLUTION_PATH: ./PPLKiller/
+  PPLKILLER_SOLUTION_PATH: .\PPLKiller
   PPLKILLER_BUILD_CONFIGURATION: Release
   PPLKILLER_DIR_TARGET: .\bin
 permissions:
@@ -17,30 +17,30 @@ jobs:
     - uses: actions/checkout@v3
     - name: Get Submodules
       run: |
-        git submodule update --init --force --recursive ${{env.PPLKILLER_SOLUTION_PATH}}
+        git submodule update --init --force --recursive ${{Env.PPLKILLER_SOLUTION_PATH}}
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: PPLKiller - Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.PPLKILLER_SOLUTION_PATH}}
+      working-directory: ${{Env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{Env.PPLKILLER_SOLUTION_PATH}}
 
     - name: PPLKiller - Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
+      working-directory: ${{Env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.PPLKILLER_BUILD_CONFIGURATION}} ${{env.PPLKILLER_SOLUTION_PATH}}
+      run: msbuild /m /p:Configuration=${{Env.PPLKILLER_BUILD_CONFIGURATION}} ${{Env.PPLKILLER_SOLUTION_PATH}}
 
     - name: Push files
       run: |
         git config user.name "Tzaoh"
         git config user.email "Tzaoh@users.noreply.github.com"
         
-        New-Item -ItemType Directory -Force -Path ${{env.PPLKILLER_DIR_TARGET}}
-        Copy-Item -Path .\PPLKiller\x64\Release\PPLKiller.exe -Destination ${{env.PPLKILLER_DIR_TARGET}}\PPLKiller.exe -Recurse -force
+        New-Item -ItemType Directory -Force -Path ${{Env.PPLKILLER_DIR_TARGET}}
+        Copy-Item -Path ${{Env.PPLKILLER_SOLUTION_PATH}}\x64\Release\PPLKiller.exe -Destination ${{Env.PPLKILLER_DIR_TARGET}}\PPLKiller.exe -Recurse -force
 
-        git add ${{env.PPLKILLER_DIR_TARGET}}\*
+        git add ${{Env.PPLKILLER_DIR_TARGET}}\*
 
         git commit -m 'Adding binaries'
         git push 
