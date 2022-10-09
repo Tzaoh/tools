@@ -46,8 +46,12 @@ jobs:
     #   with:
     #     name: PPLKiller
     #     path: PPLKiller\x64\Release\PPLKiller.exe
-  
+
     - name: Push files
       run: |
+        git config user.name "Tzaoh"
+        git config user.email "Tzaoh@users.noreply.github.com"
         cp PPLKiller\x64\Release\PPLKiller.exe .\PPLKiller.exe
-        git add .\PPLKiller.exe && git commit -m 'Adding binaries' && git push 
+        git add .\PPLKiller.exe
+        git commit -m 'Adding binaries'
+        git push 
