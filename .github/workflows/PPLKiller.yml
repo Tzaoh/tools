@@ -3,8 +3,9 @@ name: Compile PPLKiller
 on: [workflow_dispatch]
 
 env:
+  PPLKILLER_SOLUTION_PATH: ./PPLKiller/
   PPLKILLER_BUILD_CONFIGURATION: Release
-
+  PPLKILLER_DIR_TARGET: .\bin
 permissions:
   contents: write
 
@@ -36,10 +37,10 @@ jobs:
         git config user.name "Tzaoh"
         git config user.email "Tzaoh@users.noreply.github.com"
         
-        New-Item -ItemType Directory -Force -Path bin
-        Copy-Item -Path .\PPLKiller\x64\Release\PPLKiller.exe -Destination .\bin\PPLKiller.exe -Recurse -force
+        New-Item -ItemType Directory -Force -Path ${{env.PPLKILLER_DIR_TARGET}}
+        Copy-Item -Path .\PPLKiller\x64\Release\PPLKiller.exe -Destination ${{env.PPLKILLER_DIR_TARGET}}\PPLKiller.exe -Recurse -force
 
-        git add .\bin\*
+        git add ${{env.PPLKILLER_DIR_TARGET}}\*
 
         git commit -m 'Adding binaries'
         git push 
