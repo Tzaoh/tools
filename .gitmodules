@@ -1,3 +1,6 @@
 [submodule "PPLKiller"]
 	path = PPLKiller
 	url = https://github.com/RedCursorSecurityConsulting/PPLKiller
+[submodule "test"]
+	path = test
+	url = https://github.com/Tzaoh/test.git
