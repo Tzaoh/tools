@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-# on:
-#  schedule:
-#  - cron: "0 2 * * *"
-
 env:
   # Path to the solution file relative to the root of the project.
   PPLKILLER_SOLUTION_PATH: ./PPLKiller/
