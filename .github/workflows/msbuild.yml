@@ -1,10 +1,14 @@
-name: Compile Submodule Tools
+name: Generate Tool Binaries
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+# on:
+#  schedule:
+#  - cron: "0 2 * * *"
 
 env:
   # Path to the solution file relative to the root of the project.
@@ -23,7 +27,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    # - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     - name: Get Submodules
       run: |
         git submodule update --init --force --recursive --depth=1
