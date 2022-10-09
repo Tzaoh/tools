@@ -2,9 +2,6 @@ name: Compile PPLKiller
 
 on: [workflow_dispatch]
 
-env:
-  PPLKILLER_BUILD_CONFIGURATION: Release
-
 permissions:
   contents: write
 
