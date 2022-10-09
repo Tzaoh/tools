@@ -15,26 +15,14 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  PPLKiller:
     runs-on: windows-latest
     
     steps:
-    - name: print vars
-      run: |
-        echo event: ${{ github.event }}
-        echo workflow: ${{ github.workflow }}
-        echo actor: ${{ github.actor }}
-        echo repository: ${{ github.repository }}
-        echo event_name: ${{ github.event_name }}
-        echo sha: ${{ github.sha }}
-        echo ref: ${{ github.ref }}
-        echo head_ref: ${{ github.head_ref }}
-        echo base_ref: ${{ github.base_ref }}
-
     - uses: actions/checkout@v3
     - name: Get Submodules
       run: |
-        git submodule update --init --force --recursive --depth=1
+        git submodule update PPLKiller --init --force --recursive --depth=1
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
