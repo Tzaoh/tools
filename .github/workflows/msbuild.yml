@@ -9,11 +9,7 @@ on:
 env:
   # Path to the solution file relative to the root of the project.
   PPLKILLER_SOLUTION_PATH: ./PPLKiller/
-
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Release
+  PPLKILLER_BUILD_CONFIGURATION: Release
 
 permissions:
   contents: write
@@ -41,17 +37,18 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.PPLKILLER_SOLUTION_PATH}}
 
-    # - name: PPLKiller - Upload Build Artifact
-    #   uses: actions/upload-artifact@master
-    #   with:
-    #     name: PPLKiller
-    #     path: PPLKiller\x64\Release\PPLKiller.exe
-
     - name: Push files
       run: |
         git config user.name "Tzaoh"
         git config user.email "Tzaoh@users.noreply.github.com"
-        cp PPLKiller\x64\Release\PPLKiller.exe .\PPLKiller.exe
+        
+        # cp PPLKiller\x64\Release\PPLKiller.exe .\PPLKiller.exe
+        Copy-Item \
+          -Path .\PPLKiller\x64\Release\PPLKiller.exe \
+          -Destination .\PPLKiller.exe \
+          -Recurse -force
+
         git add .\PPLKiller.exe
+
         git commit -m 'Adding binaries'
         git push 
