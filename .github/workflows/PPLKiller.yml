@@ -22,7 +22,7 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: PPLKiller -  Restore NuGet packages
+    - name: PPLKiller - Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.PPLKILLER_SOLUTION_PATH}}
 
