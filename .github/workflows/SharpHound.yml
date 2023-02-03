@@ -1,0 +1,46 @@
+name: Compile SharpHound
+
+on: [workflow_dispatch]
+
+env:
+  SHARPHOUND_SOLUTION_PATH: .\SharpHound
+  SHARPHOUND_BUILD_CONFIGURATION: Release
+  SHARPHOUND_DIR_TARGET: .\bin
+permissions:
+  contents: write
+
+jobs:
+  SharpHound:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Get Submodules
+      run: |
+        git submodule update --init --force --recursive ${{Env.SHARPHOUND_SOLUTION_PATH}}
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: SharpHound - Restore NuGet packages
+      working-directory: ${{Env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{Env.SHARPHOUND_SOLUTION_PATH}}
+
+    - name: SharpHound - Build
+      working-directory: ${{Env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{Env.SHARPHOUND_BUILD_CONFIGURATION}} ${{Env.SHARPHOUND_SOLUTION_PATH}}
+
+    - name: Push files
+      run: |
+        git config user.name "Tzaoh"
+        git config user.email "Tzaoh@users.noreply.github.com"
+        
+        New-Item -ItemType Directory -Force -Path ${{Env.SHARPHOUND_DIR_TARGET}}
+        Copy-Item -Path ${{Env.SHARPHOUND_SOLUTION_PATH}}\bin\Release\net462\SharpHound.exe -Destination ${{Env.SHARPHOUND_DIR_TARGET}}\SharpHound.exe -Recurse -force
+
+        git add ${{Env.SHARPHOUND_DIR_TARGET}}\*
+
+        git commit -m 'Adding SharpHound Binary'
+        git push 

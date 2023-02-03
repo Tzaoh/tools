@@ -4,3 +4,6 @@
 [submodule "test"]
 	path = test
 	url = https://github.com/Tzaoh/test.git
+[submodule "SharpHound"]
+	path = SharpHound
+	url = https://github.com/BloodHoundAD/SharpHound.git
